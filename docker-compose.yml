@@ -1,0 +1,65 @@
+version: "3.9"
+
+services:
+  # PHP service
+  nginx:
+    container_name: web-nginx
+    build:
+      context: .
+      dockerfile: docker/nginx/Dockerfile
+    ports:
+      - "8000:80"
+      - 443:443
+    volumes:
+      - .:/app/
+    environment:
+      - VIRTUAL_HOST:docker-php.local
+    links:
+      - php
+    networks:
+      - app-network
+
+  # Nginx service
+  php:
+    container_name: web-php
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    volumes:
+      - .:/app/
+    networks:
+      - app-network
+
+  # MySQL database service
+  db:
+    container_name: web-mysql
+    build:
+      context: .
+      dockerfile: docker/mysql/Dockerfile
+    ports:
+      - "${MYSQL_PORT}:3306"
+    env_file:
+      - ./.env
+    volumes:
+      - ${MYSQL_DATA}:/var/lib/mysql
+      - ${MYSQL_LOGS}:/var/log/mysql
+    environment:
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    networks:
+      - app-network
+
+  # Redis service
+  redis:
+    container_name: web-redis
+    image: "redis:7.0.7-alpine"
+    environment:
+      ALLOW_EMPTY_PASSWORD: "yes"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
