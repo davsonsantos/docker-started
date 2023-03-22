@@ -4,7 +4,7 @@ try {
     echo 'Current PHP version: ' . phpversion();
     echo '<br />';
 
-    $host = 'db';
+    $host = 'mysql';
     $dbname = 'default';
     $user = 'default';
     $pass = 'secret';

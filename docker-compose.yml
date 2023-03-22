@@ -31,7 +31,7 @@ services:
       - app-network
 
   # MySQL database service
-  db:
+  mysql:
     container_name: web-mysql
     build:
       context: .
