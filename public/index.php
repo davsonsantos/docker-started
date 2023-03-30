@@ -1,13 +1,10 @@
 <?php
-
 try {
-    echo 'Current PHP version: ' . phpversion();
-    echo '<br />';
 
     $host = 'mysql';
-    $dbname = 'default';
-    $user = 'default';
-    $pass = 'secret';
+    $dbname = 'mysql';
+    $user = 'root';
+    $pass = 'root';
     $dsn = "mysql:host=$host;dbname=$dbname;charset=utf8";
     $conn = new PDO($dsn, $user, $pass);
 
