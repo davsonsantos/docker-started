@@ -1,6 +1,7 @@
 version: '3.9'
 
 services:
+  # ngnix service
   nginx:
     container_name: docker-started-nginx
     build:
@@ -21,6 +22,7 @@ services:
     networks:
       - docker-started
 
+  # PHP service
   php:
     container_name: docker-started-php
     build:
@@ -31,6 +33,7 @@ services:
     networks:
       - docker-started
 
+  # Mysql service
   mysql:
     container_name: docker-started-mysql
     build:
@@ -52,7 +55,9 @@ services:
   # Redis service
   redis:
     container_name: docker-started-redis
-    image: "redis:7.0.7-alpine"
+    build:
+      context: .
+      dockerfile: docker/redis/Dockerfile
     environment:
       ALLOW_EMPTY_PASSWORD: "yes"
     networks:
